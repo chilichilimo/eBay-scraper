@@ -1,0 +1,16 @@
+{
+  "scriptFile" : "../ebayscraper-1.0-SNAPSHOT.jar",
+  "entryPoint" : "comp3013.group3.ebayscraper.Function.hello",
+  "bindings" : [ {
+    "type" : "httpTrigger",
+    "name" : "req",
+    "direction" : "in",
+    "authLevel" : "anonymous",
+    "methods" : [ "get", "post" ]
+  }, {
+    "type" : "http",
+    "name" : "$return",
+    "direction" : "out"
+  } ],
+  "disabled" : false
+}
