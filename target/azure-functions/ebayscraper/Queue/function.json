@@ -1,0 +1,12 @@
+{
+  "scriptFile" : "../ebayscraper-1.0-SNAPSHOT.jar",
+  "entryPoint" : "comp3013.group3.ebayscraper.Queue.functionHandler",
+  "bindings" : [ {
+    "type" : "queueTrigger",
+    "name" : "myQueueItem",
+    "direction" : "in",
+    "connection" : "AzureWebJobsStorage",
+    "queueName" : "ebayScraper"
+  } ],
+  "disabled" : false
+}

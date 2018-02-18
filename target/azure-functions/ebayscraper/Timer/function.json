@@ -1,0 +1,17 @@
+{
+  "scriptFile" : "../ebayscraper-1.0-SNAPSHOT.jar",
+  "entryPoint" : "comp3013.group3.ebayscraper.Timer.functionHandler",
+  "bindings" : [ {
+    "type" : "timerTrigger",
+    "name" : "timerInfo",
+    "direction" : "in",
+    "schedule" : "*/30 * * * * *"
+  }, {
+    "type" : "queue",
+    "name" : "$return",
+    "direction" : "out",
+    "connection" : "AzureWebJobsStorage",
+    "queueName" : "ebayScraper"
+  } ],
+  "disabled" : false
+}
