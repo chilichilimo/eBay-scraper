@@ -22,7 +22,7 @@ class EbayClient implements Client {
 
 
 	EbayClient(Properties properties) {
-
+		token = properties.getProperty("token");
 	}
 
 	@Override
@@ -30,7 +30,7 @@ class EbayClient implements Client {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet(browseUrl + getItemUrl + itemId);
 
-		request.addHeader("Authorization", "Bearer" + token);
+		request.addHeader("Authorization", "Bearer " + token);
 		request.addHeader("Content-Type", "application/json");
 
 		LOG.info("Making getItem request for: " + itemId);
@@ -44,7 +44,7 @@ class EbayClient implements Client {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 			StringBuffer buffer = new StringBuffer();
-			String line = "";
+			String line;
 			while ((line = reader.readLine()) != null) {
 				buffer.append(line);
 			}
