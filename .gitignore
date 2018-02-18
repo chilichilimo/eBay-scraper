@@ -3,6 +3,7 @@
 
 #idea folder
 .idea/
+*iml
 
 # Log file
 *.log
