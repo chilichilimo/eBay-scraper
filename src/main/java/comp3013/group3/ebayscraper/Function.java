@@ -1,8 +1,9 @@
 package comp3013.group3.ebayscraper;
 
-import java.util.*;
 import com.microsoft.azure.serverless.functions.annotation.*;
 import com.microsoft.azure.serverless.functions.*;
+
+import java.util.Optional;
 
 /**
  * Azure Functions with HTTP Trigger.
