@@ -1,5 +1,6 @@
 package comp3013.group3.ebayscraper.httpclient;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,6 +14,8 @@ public class UtilTest {
 	String fakeClientSecret = "world";
 	String encodedCred = "aGVsbG86d29ybGQ=";
 
+	ImmutableMap<String, String> fakePayload = ImmutableMap.of("hello", "1", "world", "2");
+	String formattedPayload = "hello=1&world=2";
 
 	@Test
 	public void testBase64Encode() throws Exception {
@@ -26,5 +29,12 @@ public class UtilTest {
 		String formatted = Util.formatItemId(itemId);
 
 		Assert.assertEquals(formattedItemId, formatted);
+	}
+
+	@Test
+	public void testMakePostPayload() throws Exception {
+		String formatted = Util.makePostPayload(fakePayload);
+
+		Assert.assertEquals(formattedPayload, formatted);
 	}
 }
