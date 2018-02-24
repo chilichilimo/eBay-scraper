@@ -1,5 +1,7 @@
 package comp3013.group3.ebayscraper.httpclient;
 
+import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +20,7 @@ public class ClientTest {
 	@Rule
 	public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-	String itemId = "v1%7c401421457135%7c671053460928";
+	String itemId = "v1|401421457135|671053460928";
 	String token = "";
 
 	Client client;
@@ -31,9 +33,9 @@ public class ClientTest {
 
 	@Test
 	public void testGetItem() throws Exception {
-		String result = client.getItem(itemId);
+		JSONObject result = client.getItem(itemId);
 
-		System.out.println(result);
+		Assert.assertEquals(result.get("itemId"), itemId);
 	}
 
 	@Test
