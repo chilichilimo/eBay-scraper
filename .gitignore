@@ -4,6 +4,7 @@
 #idea folder
 .idea/
 maven-status/
+surefire-reports/
 *iml
 
 # Log file
