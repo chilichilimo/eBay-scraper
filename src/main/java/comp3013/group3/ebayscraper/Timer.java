@@ -9,7 +9,7 @@ import com.microsoft.azure.serverless.functions.annotation.*;
  */
 public class Timer {
     /**
-     * This function gets executed every 30 seconds.
+     * This function gets executed every day at 2AM.
      */
     @FunctionName("Timer")
     @QueueOutput(name = "myQueueItem", queueName = "ebayScraper", connection = "AzureWebJobsStorage")

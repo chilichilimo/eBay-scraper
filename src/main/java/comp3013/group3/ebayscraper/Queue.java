@@ -9,7 +9,7 @@ import com.microsoft.azure.serverless.functions.annotation.*;
  */
 public class Queue {
     /**
-     * This function gets executed every 30 seconds.
+     * This function gets executed every day at 2AM.
      */
     @FunctionName("Queue")
         public void functionHandler(@QueueTrigger(name = "myQueueItem", queueName = "ebayScraper", connection = "AzureWebJobsStorage") String myQueueItem, final ExecutionContext context) {
