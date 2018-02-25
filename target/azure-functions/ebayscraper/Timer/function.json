@@ -5,7 +5,7 @@
     "type" : "timerTrigger",
     "name" : "timerInfo",
     "direction" : "in",
-    "schedule" : "*/30 * * * * *"
+    "schedule" : "0 0 2 * * *"
   }, {
     "type" : "queue",
     "name" : "$return",

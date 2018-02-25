@@ -3,6 +3,7 @@
 
 #idea folder
 .idea/
+maven-status/
 
 # Log file
 *.log
