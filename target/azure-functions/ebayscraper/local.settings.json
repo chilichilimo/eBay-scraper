@@ -1,7 +1,0 @@
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=ebayscraper5d742202;AccountKey=RfjmxvV0MyXB1Lez52I/4f1w/IzsihA+WpVFpkCp3BiQnfjfOxJ9LPryOvQJzivqyaN3B0LPCR/kRnrmwokmxg==",
-    "AzureWebJobsDashboard": ""
-  }
-}

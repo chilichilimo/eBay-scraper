@@ -3,8 +3,7 @@
 
 #idea folder
 .idea/
-maven-status/
-surefire-reports/
+target/
 *iml
 
 # Log file
