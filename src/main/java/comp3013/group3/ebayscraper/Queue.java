@@ -12,7 +12,7 @@ public class Queue {
      * This function gets executed every 30 seconds.
      */
     @FunctionName("Queue")
-        public void functionHandler(@QueueTrigger(name = "myQueueItem", queueName = "ebayScraper", connection = "AzureWebJobsStorage") String myQueueItem, final ExecutionContext executionContext) {
-            executionContext.getLogger().info("Queue trigger input: " + myQueueItem);
+        public void functionHandler(@QueueTrigger(name = "myQueueItem", queueName = "ebayScraper", connection = "AzureWebJobsStorage") String myQueueItem, final ExecutionContext context) {
+            context.getLogger().info("Queue trigger input: " + myQueueItem);
     }
 }
