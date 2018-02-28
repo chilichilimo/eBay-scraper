@@ -43,6 +43,7 @@ class Query {
         return result;
     }
 
+    //TODO: Implement Functions below
     static void getProducts(){
 
     }

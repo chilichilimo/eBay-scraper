@@ -9,6 +9,7 @@ public class QueryTest {
         assert (Query.getUserEmail(1) != null);
     }
 
+    //TODO: Implement tests below
     @Test
     public void testGetProducts() throws Exception {
 
