@@ -44,6 +44,7 @@
             <artifactId>guava-gwt</artifactId>
             <version>24.0-jre</version>
         </dependency>
+        <!-- HTTP Components -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -54,10 +55,17 @@
             <artifactId>log4j-api</artifactId>
             <version>2.8</version>
         </dependency>
+        <!-- JSON -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20180130</version>
+        </dependency>
+        <!-- MySql Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.6</version>
         </dependency>
     </dependencies>
 

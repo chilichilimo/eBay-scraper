@@ -1,6 +1,5 @@
 package comp3013.group3.ebayscraper;
 
-import java.util.*;
 import com.microsoft.azure.serverless.functions.ExecutionContext;
 import com.microsoft.azure.serverless.functions.annotation.*;
 
