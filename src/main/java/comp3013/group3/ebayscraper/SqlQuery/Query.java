@@ -3,11 +3,12 @@ package comp3013.group3.ebayscraper.SqlQuery;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Properties;
 
 /**
  * Contains static functions for SQL queries.
  */
-class Query {
+public class Query {
 
     /**
      * 1. Retrieve all products, update their last_known_price in products table, update the
@@ -18,23 +19,41 @@ class Query {
      * to the queue and eliminate all the id's with that user_id from hashset.
      */
 
-    Driver driver = new Driver();
-    Connection connection;
+    private Driver driver = new Driver();
+    private Connection connection;
+
+    private static Query query;
 
     /**
      * Singleton Design Pattern
      */
-    private Query(){
+    private Query() {
         connection = driver.makeConnection();
     }
 
+    private Query(Properties properties){
+        connection = driver.makeConnection(properties);
+    }
+
     /**
-     * TODO: Implement.
      * Retrieves all the eBay IDs of the products to be retrieve new prices of products.
      * @return list of eBay IDs to be used to retrieve new prices.
      */
-    static ArrayList<String> getProductsEbayId(){
+    public ArrayList<String> getProductsEbayId(){
         ArrayList<String> results = new ArrayList<String>();
+
+        String sqlQuery = "SELECT ebay_id FROM products";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            while (resultSet.next()) {
+                results.add(resultSet.getString("ebay_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return results;
     }
 
@@ -45,7 +64,7 @@ class Query {
      * @param newPrice product's new price
      * @return true if all product price update is successful.
      */
-    static boolean updateProductsPrices(String eBayId, double newPrice){
+    public static boolean updateProductsPrices(String eBayId, double newPrice){
         boolean result = false;
         return result;
     }
@@ -56,7 +75,7 @@ class Query {
      * @param productId product ID
      * @return true if the price update was successful, false otherwise.
      */
-    static boolean updatePriceHistory(int productId){
+    public static boolean updatePriceHistory(int productId){
         boolean result = false;
         return result;
     }
@@ -68,7 +87,7 @@ class Query {
      * the last_notified_price.
      * @return a set of price watch IDs.
      */
-    static HashSet<Integer> checkPriceWatchNotifications(){
+    public static HashSet<Integer> checkPriceWatchNotifications(){
         HashSet<Integer> priceWatchIds = new HashSet<Integer>();
         return priceWatchIds;
     }
@@ -80,7 +99,7 @@ class Query {
      * Creates email notification objects to be added to the queue of mailer.
      * @param priceWatchId the list of priceWatches recently updated.
      */
-    static void createEmailNotificationItems(HashSet<Integer> priceWatchId){
+    public static void createEmailNotificationItems(HashSet<Integer> priceWatchId){
 
     }
 
@@ -89,7 +108,7 @@ class Query {
      * @param id user ID
      * @return user email
      */
-    static String getUserEmail(int id){
+    public static String getUserEmail(int id){
         Query query = new Query();
         String result = null;
 
@@ -105,5 +124,13 @@ class Query {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static Query getInstance(Properties properties) {
+        if (query == null) {
+            query = new Query(properties);
+        }
+
+        return query;
     }
 }
