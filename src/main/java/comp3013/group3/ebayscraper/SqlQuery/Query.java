@@ -3,6 +3,7 @@ package comp3013.group3.ebayscraper.SqlQuery;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Properties;
 
@@ -135,26 +136,62 @@ public class Query {
     }
 
     /**
-     * TODO: Implement.
+     * TODO: Efficiency can be improved.
      * Iterates over all price watch IDs and if there is a new price for each item
-     * (lower than before),it adds the price watch ID to the output. Also updates
-     * the last_notified_price.
+     * (lower than before) in products table,it adds the price watch ID to the output.
      * @return a set of price watch IDs.
      */
-    public HashSet<Integer> checkPriceWatchNotifications(){
-        HashSet<Integer> priceWatchIds = new HashSet<Integer>();
-        return priceWatchIds;
+    public ArrayList<Integer> checkPriceWatchNotifications(){
+        ArrayList<Integer> results = new ArrayList<Integer>();
+
+        String sqlQuery = "SELECT id, product_id, user_id, last_notified_price FROM product_watches";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            while (resultSet.next()) {
+                if (resultSet.getDouble(4) > getProductPrice(resultSet.getInt(2))){
+                    results.add(resultSet.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return results;
     }
 
+    public boolean updateLastNotifiedPrice(int watchId, double price){
+        boolean result = false;
+
+        String sqlQuery = "UPDATE product_watches SET last_notified_price = " + price + "WHERE id = " + watchId;
+
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sqlQuery);
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     /**
-     * TODO: Implement a POJO for return element (user email and the list of their desired products with their prices.)
-     * TODO: Implement
+     * TODO: Efficiency can be improved.
+     * TODO: Implement.
      * Creates email notification objects to be added to the queue of mailer.
      * @param priceWatchId the list of priceWatches recently updated.
+     * @return map of user IDs to list of their desired item IDs.
      */
-    public void createEmailNotificationItems(HashSet<Integer> priceWatchId){
+    public HashMap<String, ArrayList<Integer>> createEmailNotificationItems(ArrayList<Integer> priceWatchId){
+        HashMap<String, ArrayList<Integer>> result = new HashMap<String, ArrayList<Integer>>();
 
+        for (int watchId : priceWatchId){
+
+        }
+
+        return result;
     }
 
     /**
@@ -176,6 +213,30 @@ public class Query {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    /**
+     * Gets item's price from products table
+     * @param productId item's id
+     * @return double value for item's price
+     */
+    public double getProductPrice(int productId){
+        double result = -1;
+
+        String sqlQuery = "SELECT last_known_price FROM products WHERE id = " + productId;
+
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            resultSet.next();
+            result = resultSet.getDouble(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 }
