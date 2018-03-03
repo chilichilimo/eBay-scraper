@@ -11,6 +11,10 @@ import java.util.Properties;
  */
 class Driver {
 
+    Driver() {
+        loadDriver();
+    }
+
     /**
      * Loads JDCB driver
      */
@@ -59,6 +63,14 @@ class Driver {
         catch (Exception ex){
             System.out.println("Error in loading config file: " + ex.getMessage() + "\n" + ex.getStackTrace());
         }
+        String db_url = properties.getProperty("db_url");
+        String username = properties.getProperty("sql_username");
+        String password = properties.getProperty("sql_password");
+
+        return makeConnection(db_url, username, password);
+    }
+
+    Connection makeConnection(Properties properties) {
         String db_url = properties.getProperty("db_url");
         String username = properties.getProperty("sql_username");
         String password = properties.getProperty("sql_password");
