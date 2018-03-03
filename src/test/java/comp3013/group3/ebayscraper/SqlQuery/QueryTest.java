@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,28 +34,33 @@ public class QueryTest {
         }
     }
 
-    //TODO: Implement.
     @Test
     public void testUpdateProductsPrices() throws Exception {
-//        assert (query.updateProductsPrices("v1|273061822198|572310666234", 300));
+        assert (query.updateProductsPrices("v1|273061822198|572310666234", 300));
     }
 
-    //TODO: Implement.
     @Test
     public void testUpdatePriceHistory() throws Exception{
-//        assert (query.updatePriceHistory("v1|273061822198|572310666234", 300));
+        assert (query.updatePriceHistory("v1|273061822198|572310666234", 300));
     }
 
-    //TODO: Implement.
     @Test
     public void testCheckPriceWatchNotifications() throws Exception{
-//        query.checkPriceWatchNotifications();
+        assert (query.checkPriceWatchNotifications() != null);
     }
 
-    //TODO: Implement.
     @Test
     public void testUpdateLastNotifiedPrice(){
-//        query.updateLastNotifiedPrice(4,300);
-//        query.updateLastNotifiedPrice(9,300);
+        assert (query.updateLastNotifiedPrice(4,300));
+        assert (query.updateLastNotifiedPrice(9,300));
+    }
+
+    @Test
+    public void testCreateEmailNotificationItems(){
+        ArrayList<Integer> test = new ArrayList<>();
+        test.add(4);
+        test.add(5);
+        test.add(9);
+        assert (query.createEmailNotificationItems(test) != null);
     }
 }

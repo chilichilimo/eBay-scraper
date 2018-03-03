@@ -4,7 +4,6 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Properties;
 
 /**
@@ -161,6 +160,12 @@ public class Query {
         return results;
     }
 
+    /**
+     * Updates last notified price for a watched item.
+     * @param watchId item's watch ID
+     * @param price item's notified price
+     * @return boolean value showing success or failure of the function.
+     */
     public boolean updateLastNotifiedPrice(int watchId, double price){
         boolean result = false;
 
@@ -179,7 +184,6 @@ public class Query {
 
     /**
      * TODO: Efficiency can be improved.
-     * TODO: Implement.
      * Creates email notification objects to be added to the queue of mailer.
      * @param priceWatchId the list of priceWatches recently updated.
      * @return map of user IDs to list of their desired item IDs.
@@ -188,7 +192,24 @@ public class Query {
         HashMap<String, ArrayList<Integer>> result = new HashMap<String, ArrayList<Integer>>();
 
         for (int watchId : priceWatchId){
+            String sqlQuery = "SELECT product_id, user_id FROM product_watches WHERE id = " + watchId;
+            try {
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery(sqlQuery);
 
+                while (resultSet.next()) {
+                    if (result.containsKey(resultSet.getString(2))){
+                        result.get(resultSet.getString(2)).add(resultSet.getInt(1));
+                    }
+                    else{
+                        ArrayList<Integer> products = new ArrayList<Integer>();
+                        products.add(resultSet.getInt(1));
+                        result.put(resultSet.getString(2), products);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
