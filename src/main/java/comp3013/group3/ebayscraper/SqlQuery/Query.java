@@ -1,6 +1,7 @@
 package comp3013.group3.ebayscraper.SqlQuery;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Properties;
@@ -27,16 +28,20 @@ public class Query {
     /**
      * Singleton Design Pattern
      */
-    private Query() {
-        connection = driver.makeConnection();
-    }
-
     private Query(Properties properties){
         connection = driver.makeConnection(properties);
     }
 
+    public static Query getInstance(Properties properties) {
+        if (query == null) {
+            query = new Query(properties);
+        }
+
+        return query;
+    }
+
     /**
-     * Retrieves all the eBay IDs of the products to be retrieve new prices of products.
+     * Gets all the eBay IDs of the products to be used to get new prices of products.
      * @return list of eBay IDs to be used to retrieve new prices.
      */
     public ArrayList<String> getProductsEbayId(){
@@ -58,25 +63,74 @@ public class Query {
     }
 
     /**
-     * TODO: Implement.
-     * updates the price of all products with the data received form eBay.
-     * @param eBayId product's eBay ID
+     * updates the price of all products in products table with the data received form eBay.
+     * @param ebayId product's eBay ID
      * @param newPrice product's new price
      * @return true if all product price update is successful.
      */
-    public static boolean updateProductsPrices(String eBayId, double newPrice){
+    public boolean updateProductsPrices(String ebayId, double newPrice){
         boolean result = false;
+
+        String sqlQuery = "UPDATE products SET last_known_price = " + newPrice + " WHERE ebay_id = \'" + ebayId + "\'";
+
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sqlQuery);
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 
     /**
-     * TODO: Implement.
+     * returns the product's ID (foreign key of all tables except product) from eBay ID
+     * @param ebayId item's eBay ID
+     * @return item's product ID
+     */
+    private int getProductIdFromBayId(String ebayId){
+        int result = -1;
+
+        String sqlQuery = "SELECT id FROM products WHERE ebay_id =  \'" + ebayId + "\'";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            resultSet.next();
+            result = resultSet.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
      * Adds the latest price of an item to the price history
-     * @param productId product ID
+     * @param ebayId  item's eBay ID
      * @return true if the price update was successful, false otherwise.
      */
-    public static boolean updatePriceHistory(int productId){
+    public boolean updatePriceHistory(String ebayId, double newPrice){
         boolean result = false;
+
+        int productId = getProductIdFromBayId(ebayId);
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String sqlQuery = "UPDATE price_history SET price = " + newPrice + ", timestamp = \'" + sdf.format(timestamp)
+                + "\'" + " WHERE product_id = " + productId;
+
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sqlQuery);
+            result = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 
@@ -87,7 +141,7 @@ public class Query {
      * the last_notified_price.
      * @return a set of price watch IDs.
      */
-    public static HashSet<Integer> checkPriceWatchNotifications(){
+    public HashSet<Integer> checkPriceWatchNotifications(){
         HashSet<Integer> priceWatchIds = new HashSet<Integer>();
         return priceWatchIds;
     }
@@ -99,7 +153,7 @@ public class Query {
      * Creates email notification objects to be added to the queue of mailer.
      * @param priceWatchId the list of priceWatches recently updated.
      */
-    public static void createEmailNotificationItems(HashSet<Integer> priceWatchId){
+    public void createEmailNotificationItems(HashSet<Integer> priceWatchId){
 
     }
 
@@ -108,13 +162,12 @@ public class Query {
      * @param id user ID
      * @return user email
      */
-    public static String getUserEmail(int id){
-        Query query = new Query();
+    public String getUserEmail(int id){
         String result = null;
 
         String sqlQuery = "SELECT email FROM users WHERE id = " + id;
         try{
-            Statement statement = query.connection.createStatement();
+            Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery);
 
             resultSet.next();
@@ -124,13 +177,5 @@ public class Query {
             e.printStackTrace();
         }
         return result;
-    }
-
-    public static Query getInstance(Properties properties) {
-        if (query == null) {
-            query = new Query(properties);
-        }
-
-        return query;
     }
 }

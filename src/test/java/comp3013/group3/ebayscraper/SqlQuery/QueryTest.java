@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 public class QueryTest {
     Query query;
@@ -21,10 +22,9 @@ public class QueryTest {
 
     @Test
     public void testGetUserID() throws Exception {
-        assert (Query.getUserEmail(1) != null);
+        assert (query.getUserEmail(1) != null);
     }
 
-    //TODO: Implement tests below
     @Test
     public void testGetProducts() throws Exception {
         List<String> results = query.getProductsEbayId();
@@ -35,24 +35,12 @@ public class QueryTest {
     }
 
     @Test
-    public void testGetProductWatches() throws Exception {
-
+    public void testUpdateProductsPrices() throws Exception {
+        assert (query.updateProductsPrices("v1|273061822198|572310666234", 300));
     }
 
     @Test
-    public void testUpdateProducts() throws Exception {
-
+    public void testUpdatePriceHistory() throws Exception{
+        assert (query.updatePriceHistory("v1|273061822198|572310666234", 300));
     }
-
-    @Test
-    public void testUpdateProductWatches() throws Exception {
-
-    }
-
-    @Test
-    public void testUpdatePriceHistory() throws Exception {
-
-    }
-
-
 }
