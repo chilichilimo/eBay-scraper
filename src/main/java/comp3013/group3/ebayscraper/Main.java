@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.zip.Inflater;
 
 public class Main {
     public static void main(String args[]) {
@@ -37,7 +36,7 @@ public class Main {
             System.out.println(payload.getJSONObject("price").toString());
             double newPrice = payload.getJSONObject("price").getDouble("value");
             query.updateProductsPrices(id, newPrice);
-//            query.updatePriceHistory(id, newPrice);
+            query.updatePriceHistory(id, newPrice);
         }
 
         ArrayList<Integer> watchIds = new ArrayList<Integer>();
@@ -59,5 +58,6 @@ public class Main {
             mailer.sendMail(ImmutableMap.<String, Iterable<ImmutableItemInfo>>builder().putAll(emailItemMap).build());
         }
 
+        //TODO:Update the last_notified_prices in the watchlist
     }
 }
