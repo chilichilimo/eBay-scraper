@@ -15,7 +15,7 @@ public class MailerTest {
 	String testDest1;
 	String testDest2;
 
-	ImmutableMap<String, Iterable<ItemInfo>> testItems;
+	ImmutableMap<String, Iterable<ImmutableItemInfo>> testItems;
 
 	Mailer mailer;
 
@@ -44,8 +44,8 @@ public class MailerTest {
 				.price(56.78)
 				.build();
 
-		ImmutableList<ItemInfo> itemList1 = ImmutableList.of(item1, item2);
-		ImmutableList<ItemInfo> itemList2 = ImmutableList.of(item3);
+		ImmutableList<ImmutableItemInfo> itemList1 = ImmutableList.of(item1, item2);
+		ImmutableList<ImmutableItemInfo> itemList2 = ImmutableList.of(item3);
 
 		testItems = ImmutableMap.of(testDest1, itemList1, testDest2, itemList2);
 	}

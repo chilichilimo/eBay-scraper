@@ -39,17 +39,28 @@ class MailerClient implements Mailer {
 	}
 
 	@Override
-	public void sendMail(ImmutableMap<String, Iterable<ItemInfo>> toEmail) throws MailerException {
+	public void sendMail(ImmutableMap<String, Iterable<ImmutableItemInfo>> toEmail) throws MailerException {
 		toEmail.entrySet().forEach(entry -> sendMail(entry.getKey(), entry.getValue()));
 	}
 
-	void sendMail(String email, Iterable<ItemInfo> items) throws MailerException {
+	void sendMail(String email, Iterable<ImmutableItemInfo> items) throws MailerException {
 		StringBuilder builder = new StringBuilder();
 		builder.append("New lowest prices for the following items: \n");
-		items.forEach(item -> {
-			builder.append("item: " + item.name() + " price: " + item.price() + " link " + item.url());
-			builder.append("\n");
-		});
+
+		boolean no_items = true;
+		for (ImmutableItemInfo item : items) {
+			if (item == null) {
+				System.out.println(email + " has null item");
+			} else {
+				no_items = false;
+				builder.append("item: " + item.name() + " price: " + item.price() + " link " + item.url());
+				builder.append("\n");
+			}
+		}
+
+		if (no_items) {
+			return;
+		}
 
 		builder.append("Footer stuff\n");
 		try {
