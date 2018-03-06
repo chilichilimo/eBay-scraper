@@ -1,5 +1,8 @@
 package comp3013.group3.ebayscraper.SqlQuery;
 
+import comp3013.group3.ebayscraper.mailer.ImmutableItemInfo;
+import comp3013.group3.ebayscraper.mailer.ItemInfo;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -188,8 +191,8 @@ public class Query {
      * @param priceWatchId the list of priceWatches recently updated.
      * @return map of user IDs to list of their desired item IDs.
      */
-    public HashMap<String, ArrayList<Integer>> createEmailNotificationItems(ArrayList<Integer> priceWatchId){
-        HashMap<String, ArrayList<Integer>> result = new HashMap<String, ArrayList<Integer>>();
+    public HashMap<Integer, ArrayList<Integer>> createEmailNotificationItems(ArrayList<Integer> priceWatchId){
+        HashMap<Integer, ArrayList<Integer>> result = new HashMap<Integer, ArrayList<Integer>>();
 
         for (int watchId : priceWatchId){
             String sqlQuery = "SELECT product_id, user_id FROM product_watches WHERE id = " + watchId;
@@ -198,13 +201,13 @@ public class Query {
                 ResultSet resultSet = statement.executeQuery(sqlQuery);
 
                 while (resultSet.next()) {
-                    if (result.containsKey(resultSet.getString(2))){
-                        result.get(resultSet.getString(2)).add(resultSet.getInt(1));
+                    if (result.containsKey(resultSet.getInt(2))){
+                        result.get(resultSet.getInt(2)).add(resultSet.getInt(1));
                     }
                     else{
                         ArrayList<Integer> products = new ArrayList<Integer>();
                         products.add(resultSet.getInt(1));
-                        result.put(resultSet.getString(2), products);
+                        result.put(resultSet.getInt(2), products);
                     }
                 }
             } catch (SQLException e) {
@@ -259,5 +262,25 @@ public class Query {
         }
 
         return result;
+    }
+
+    public ImmutableItemInfo getProductDetails(int productId){
+        ImmutableItemInfo itemInfo = null;
+        String sqlQuery = "SELECT name, last_known_price FROM products WHERE id = " + productId;
+
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            resultSet.next();
+            itemInfo = ImmutableItemInfo.builder()
+                    .name(resultSet.getString(1))
+                    .url("TO BE ADDED")
+                    .price(resultSet.getDouble(2))
+                    .build();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return itemInfo;
     }
 }

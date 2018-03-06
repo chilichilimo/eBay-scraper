@@ -13,7 +13,7 @@ public interface Mailer {
 	 *                Values are an iterable list of ItemInfo objects
 	 * @throws MailerException Wrapper around MessagingException from javax.mail extending RuntimeExceptiom
 	 */
-	void sendMail(ImmutableMap<String, Iterable<ItemInfo>> toEmail) throws MailerException;
+	void sendMail(ImmutableMap<String, Iterable<ImmutableItemInfo>> toEmail) throws MailerException;
 
 	/**
 	 * Builder for instance of Mailer. See MailerTest for example instantiation
