@@ -39,10 +39,9 @@ public class Main {
             query.updatePriceHistory(id, newPrice);
         }
 
-        ArrayList<Integer> watchIds = new ArrayList<Integer>();
-        watchIds = query.checkPriceWatchNotifications();
-        HashMap<Integer, ArrayList<Integer>> userWatches = new HashMap<Integer, ArrayList<Integer>>();
-        userWatches = query.createEmailNotificationItems(watchIds);
+        ArrayList<Integer> watchIds = query.checkPriceWatchNotifications();
+        HashMap<Integer, ArrayList<Integer>> userWatches = query.createEmailNotificationItems(watchIds);
+        System.out.println(userWatches.size());
 
         if (!userWatches.isEmpty()) {
             HashMap<String, ArrayList<ImmutableItemInfo>> emailItemMap = new HashMap<String, ArrayList<ImmutableItemInfo>>();
@@ -58,6 +57,9 @@ public class Main {
             mailer.sendMail(ImmutableMap.<String, Iterable<ImmutableItemInfo>>builder().putAll(emailItemMap).build());
         }
 
-        //TODO:Update the last_notified_prices in the watchlist
+        for (int watchId: watchIds) {
+            System.out.println(query.getProductIdWatchTable(watchId));
+            query.updateLastNotifiedPrice(watchId, query.getProductPrice(query.getProductIdWatchTable(watchId)));
+        }
     }
 }
