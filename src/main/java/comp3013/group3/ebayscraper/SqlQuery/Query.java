@@ -264,6 +264,26 @@ public class Query {
         return result;
     }
 
+    //TODO: Add doc
+    public int getProductIdWatchTable(int watchId){
+        int result = -1;
+
+        String sqlQuery = "SELECT product_id FROM product_watches WHEN id = "+watchId;
+
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            resultSet.next();
+            result = resultSet.getInt(1);
+        } catch (SQLException e){
+            e.printStackTrace();;
+        }
+
+        return result;
+    }
+
+    //TODO: Add Doc
     public ImmutableItemInfo getProductDetails(int productId){
         ImmutableItemInfo itemInfo = null;
         String sqlQuery = "SELECT name, last_known_price FROM products WHERE id = " + productId;
