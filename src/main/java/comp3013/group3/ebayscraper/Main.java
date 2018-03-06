@@ -1,16 +1,22 @@
 package comp3013.group3.ebayscraper;
 
+import com.google.common.collect.ImmutableMap;
 import comp3013.group3.ebayscraper.SqlQuery.Query;
 import comp3013.group3.ebayscraper.httpclient.Client;
+import comp3013.group3.ebayscraper.mailer.ImmutableItemInfo;
+import comp3013.group3.ebayscraper.mailer.Mailer;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.zip.Inflater;
 
 public class Main {
-    public static void main(String args[]){
+    public static void main(String args[]) {
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(System.getProperty("user.dir") + "/resources/config.properties"));
@@ -19,19 +25,39 @@ public class Main {
         }
         Query query = Query.getInstance(properties);
         Client client = Client.builder(properties);
+        Mailer mailer = Mailer.builder(properties);
 
         ArrayList<String> ebayIds = query.getProductsEbayId();
         for (String id : ebayIds) {
             JSONObject payload = client.getItem(id);
+            if (!payload.has("price")) {
+                System.out.println(id);
+                continue;
+            }
             System.out.println(payload.getJSONObject("price").toString());
             double newPrice = payload.getJSONObject("price").getDouble("value");
             query.updateProductsPrices(id, newPrice);
-            query.updatePriceHistory(id, newPrice);
+//            query.updatePriceHistory(id, newPrice);
         }
 
         ArrayList<Integer> watchIds = new ArrayList<Integer>();
         watchIds = query.checkPriceWatchNotifications();
+        HashMap<Integer, ArrayList<Integer>> userWatches = new HashMap<Integer, ArrayList<Integer>>();
+        userWatches = query.createEmailNotificationItems(watchIds);
 
+        if (!userWatches.isEmpty()) {
+            HashMap<String, ArrayList<ImmutableItemInfo>> emailItemMap = new HashMap<String, ArrayList<ImmutableItemInfo>>();
+            for (Map.Entry<Integer, ArrayList<Integer>> entry : userWatches.entrySet()) {
+                String userEmail = query.getUserEmail(entry.getKey());
+                ArrayList<ImmutableItemInfo> listOfProducts = new ArrayList<ImmutableItemInfo>();
+                for (Integer product_id : entry.getValue()) {
+                    ImmutableItemInfo item = query.getProductDetails(product_id);
+                    listOfProducts.add(item);
+                }
+                emailItemMap.put(userEmail, listOfProducts);
+            }
+            mailer.sendMail(ImmutableMap.<String, Iterable<ImmutableItemInfo>>builder().putAll(emailItemMap).build());
+        }
 
     }
 }
