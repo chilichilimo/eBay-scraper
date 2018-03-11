@@ -30,10 +30,8 @@ public class Main {
         for (String id : ebayIds) {
             JSONObject payload = client.getItem(id);
             if (!payload.has("price")) {
-                System.out.println(id);
                 continue;
             }
-            System.out.println(payload.getJSONObject("price").toString());
             double newPrice = payload.getJSONObject("price").getDouble("value");
             query.updateProductsPrices(id, newPrice);
             query.updatePriceHistory(id, newPrice);
@@ -41,7 +39,6 @@ public class Main {
 
         ArrayList<Integer> watchIds = query.checkPriceWatchNotifications();
         HashMap<Integer, ArrayList<Integer>> userWatches = query.createEmailNotificationItems(watchIds);
-        System.out.println(userWatches.size());
 
         if (!userWatches.isEmpty()) {
             HashMap<String, ArrayList<ImmutableItemInfo>> emailItemMap = new HashMap<String, ArrayList<ImmutableItemInfo>>();
@@ -58,7 +55,6 @@ public class Main {
         }
 
         for (int watchId: watchIds) {
-            System.out.println(query.getProductIdWatchTable(watchId));
             query.updateLastNotifiedPrice(watchId, query.getProductPrice(query.getProductIdWatchTable(watchId)));
         }
     }
