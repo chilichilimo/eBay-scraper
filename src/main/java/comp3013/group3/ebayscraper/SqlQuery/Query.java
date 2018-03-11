@@ -123,8 +123,8 @@ public class Query {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String sqlQuery = "UPDATE price_history SET price = " + newPrice + ", timestamp = \'" + sdf.format(timestamp)
-                + "\'" + " WHERE product_id = " + productId;
+        String sqlQuery = "INSERT INTO price_history (price, timestamp, product_id) VALUES (" + newPrice +  ", " +  "\'" + sdf.format(timestamp)
+                + "\', " + productId + ")";
 
         try {
             Statement statement = connection.createStatement();
