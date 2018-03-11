@@ -5,6 +5,8 @@ import comp3013.group3.ebayscraper.SqlQuery.Query;
 import comp3013.group3.ebayscraper.httpclient.Client;
 import comp3013.group3.ebayscraper.mailer.ImmutableItemInfo;
 import comp3013.group3.ebayscraper.mailer.Mailer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -22,6 +24,9 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Logger log = LogManager.getLogger();
+        log.error("Test log");
         Query query = Query.getInstance(properties);
         Client client = Client.builder(properties);
         Mailer mailer = Mailer.builder(properties);
