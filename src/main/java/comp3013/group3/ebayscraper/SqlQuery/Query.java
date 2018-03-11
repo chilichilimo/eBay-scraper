@@ -214,7 +214,6 @@ public class Query {
                 e.printStackTrace();
             }
         }
-
         return result;
     }
 
@@ -264,11 +263,15 @@ public class Query {
         return result;
     }
 
-    //TODO: Add doc
+    /**
+     * Gets product's ID from the product_watches table
+     * @param watchId watch ID
+     * @return product's ID
+     */
     public int getProductIdWatchTable(int watchId){
         int result = -1;
 
-        String sqlQuery = "SELECT product_id FROM product_watches WHEN id = "+watchId;
+        String sqlQuery = "SELECT product_id FROM product_watches WHERE id = " + watchId;
 
         try{
             Statement statement = connection.createStatement();
@@ -277,13 +280,17 @@ public class Query {
             resultSet.next();
             result = resultSet.getInt(1);
         } catch (SQLException e){
-            e.printStackTrace();;
+            e.printStackTrace();
         }
 
         return result;
     }
 
-    //TODO: Add Doc
+    /**
+     * Gets products details for sending emails to watching users
+     * @param productId product's ID
+     * @return ItemInfo object containing product details
+     */
     public ImmutableItemInfo getProductDetails(int productId){
         ImmutableItemInfo itemInfo = null;
         String sqlQuery = "SELECT name, last_known_price FROM products WHERE id = " + productId;
