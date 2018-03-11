@@ -123,8 +123,8 @@ public class Query {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String sqlQuery = "UPDATE price_history SET price = " + newPrice + ", timestamp = \'" + sdf.format(timestamp)
-                + "\'" + " WHERE product_id = " + productId;
+        String sqlQuery = "INSERT INTO price_history (price, timestamp, product_id) VALUES (" + newPrice +  ", " +  "\'" + sdf.format(timestamp)
+                + "\', " + productId + ")";
 
         try {
             Statement statement = connection.createStatement();
@@ -214,7 +214,6 @@ public class Query {
                 e.printStackTrace();
             }
         }
-
         return result;
     }
 
@@ -264,11 +263,15 @@ public class Query {
         return result;
     }
 
-    //TODO: Add doc
+    /**
+     * Gets product's ID from the product_watches table
+     * @param watchId watch ID
+     * @return product's ID
+     */
     public int getProductIdWatchTable(int watchId){
         int result = -1;
 
-        String sqlQuery = "SELECT product_id FROM product_watches WHEN id = "+watchId;
+        String sqlQuery = "SELECT product_id FROM product_watches WHERE id = " + watchId;
 
         try{
             Statement statement = connection.createStatement();
@@ -277,16 +280,20 @@ public class Query {
             resultSet.next();
             result = resultSet.getInt(1);
         } catch (SQLException e){
-            e.printStackTrace();;
+            e.printStackTrace();
         }
 
         return result;
     }
 
-    //TODO: Add Doc
+    /**
+     * Gets products details for sending emails to watching users
+     * @param productId product's ID
+     * @return ItemInfo object containing product details
+     */
     public ImmutableItemInfo getProductDetails(int productId){
         ImmutableItemInfo itemInfo = null;
-        String sqlQuery = "SELECT name, last_known_price FROM products WHERE id = " + productId;
+        String sqlQuery = "SELECT name, last_known_price, item_web_url FROM products WHERE id = " + productId;
 
         try{
             Statement statement = connection.createStatement();
@@ -295,7 +302,7 @@ public class Query {
             resultSet.next();
             itemInfo = ImmutableItemInfo.builder()
                     .name(resultSet.getString(1))
-                    .url("TO BE ADDED")
+                    .url((resultSet.getString(3) == null)? "No Link is available" : resultSet.getString(3))
                     .price(resultSet.getDouble(2))
                     .build();
         } catch(SQLException e){
