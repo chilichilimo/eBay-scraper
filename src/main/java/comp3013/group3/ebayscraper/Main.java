@@ -5,6 +5,8 @@ import comp3013.group3.ebayscraper.SqlQuery.Query;
 import comp3013.group3.ebayscraper.httpclient.Client;
 import comp3013.group3.ebayscraper.mailer.ImmutableItemInfo;
 import comp3013.group3.ebayscraper.mailer.Mailer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -17,11 +19,13 @@ import java.util.Properties;
 public class Main {
     public static void main(String args[]) {
 
+        Logger LOG = LogManager.getLogger(Query.class.getName());
+
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(System.getProperty("user.dir") + "/resources/config.properties"));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.debug("IOException: " + e.getMessage());
         }
 
         Query query = Query.getInstance(properties);
@@ -32,6 +36,7 @@ public class Main {
         for (String id : ebayIds) {
             JSONObject payload = client.getItem(id);
             if (!payload.has("price")) {
+                LOG.error("eBay ID " + id + "is not valid.");
                 continue;
             }
             double newPrice = payload.getJSONObject("price").getDouble("value");

@@ -48,11 +48,10 @@
               <outputDirectory>${project.build.directory}</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${project.basedir}</directory>
+                  <directory>${project.basedir}/resources</directory>
                   <includes>
-                    <include>host.json</include>
-                    <include>local.settings.json</include>
-                    <include>resources/properties.config</include>
+                    <include>properties.config</include>
+                    <include>log4j2.properties</include>
                   </includes>
                 </resource>
               </resources>
