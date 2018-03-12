@@ -1,7 +1,8 @@
 package comp3013.group3.ebayscraper.SqlQuery;
 
 import comp3013.group3.ebayscraper.mailer.ImmutableItemInfo;
-import comp3013.group3.ebayscraper.mailer.ItemInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ public class Query {
      * 3. For every element in the hashset, find all items a user_id is watching, add a ticket
      * to the queue and eliminate all the id's with that user_id from hashset.
      */
+    private static Logger LOG = LogManager.getLogger(Query.class.getName());
 
     private Driver driver = new Driver();
     private Connection connection;
@@ -58,6 +60,8 @@ public class Query {
             while (resultSet.next()) {
                 results.add(resultSet.getString("ebay_id"));
             }
+
+            LOG.info("Retrieved ebay IDs from the database.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -80,6 +84,7 @@ public class Query {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
             result = true;
+            LOG.info("Updated price for eBay ID " + ebayId + " with " + newPrice + " price.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,6 +108,7 @@ public class Query {
             resultSet.next();
             result = resultSet.getInt(1);
 
+            LOG.info("Product ID" + result + "retrieved from ebay ID " + ebayId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -130,6 +136,7 @@ public class Query {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
             result = true;
+            LOG.info("Price history for eBay ID " + ebayId + " updated with price " + newPrice);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -154,6 +161,7 @@ public class Query {
             while (resultSet.next()) {
                 if (resultSet.getDouble(4) > getProductPrice(resultSet.getInt(2))){
                     results.add(resultSet.getInt(1));
+                    LOG.info("Price watch notification added for watch ID " + resultSet.getInt(1));
                 }
             }
         } catch (SQLException e) {
@@ -178,6 +186,7 @@ public class Query {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlQuery);
             result = true;
+            LOG.info("Last notified price updated for watch ID " + watchId + " with price " + price);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -210,6 +219,8 @@ public class Query {
                         result.put(resultSet.getInt(2), products);
                     }
                 }
+                LOG.info("Created email notification for user " + resultSet.getInt(2) + "and products "
+                        + result.get(resultSet.getInt(2)));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -233,6 +244,7 @@ public class Query {
             resultSet.next();
             result = resultSet.getString(1);
 
+            LOG.info("Getting user email " + result + " for ID " + id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -256,6 +268,7 @@ public class Query {
             resultSet.next();
             result = resultSet.getDouble(1);
 
+            LOG.info("Getting product price " + result + " for product ID " + productId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -279,6 +292,8 @@ public class Query {
 
             resultSet.next();
             result = resultSet.getInt(1);
+
+            LOG.info("Product ID " + result + " retrieved for watch ID " + watchId);
         } catch (SQLException e){
             e.printStackTrace();
         }
