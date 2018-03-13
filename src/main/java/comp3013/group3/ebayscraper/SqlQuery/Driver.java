@@ -20,7 +20,7 @@ class Driver {
      */
     private void loadDriver(){
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").newInstance();
         } catch (Exception ex) {
             System.out.println("Error in loading driver: " + ex.getMessage() + "\n" + ex.getStackTrace());
         }
@@ -37,10 +37,13 @@ class Driver {
 
         loadDriver();
 
+        String passing_url = url + ";databaseName=ebaySqlServerDB;user="+username+";password="+password+";";
+
         // Make connection
         Connection connection = null;
         try {
-            connection =  DriverManager.getConnection(url, username, password);
+//            connection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(passing_url);
 
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
