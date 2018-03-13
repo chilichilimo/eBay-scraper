@@ -1,5 +1,8 @@
 package comp3013.group3.ebayscraper.SqlQuery;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +13,8 @@ import java.util.Properties;
  * JDCB Driver Manager wrapper
  */
 class Driver {
+
+    Logger LOG = LogManager.getLogger(Driver.class.getName());
 
     Driver() {
         loadDriver();
@@ -46,9 +51,9 @@ class Driver {
             connection = DriverManager.getConnection(passing_url);
 
         } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
+            LOG.debug("SQLException: " + ex.getMessage());
+            LOG.debug("SQLState: " + ex.getSQLState());
+            LOG.debug("VendorError: " + ex.getErrorCode());
         }
 
         return connection;
