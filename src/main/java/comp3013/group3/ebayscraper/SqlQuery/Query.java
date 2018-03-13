@@ -52,7 +52,7 @@ public class Query {
     public ArrayList<String> getProductsEbayId(){
         ArrayList<String> results = new ArrayList<String>();
 
-        String sqlQuery = "SELECT ebay_id FROM products";
+        String sqlQuery = "SELECT ebay_id FROM ebaydb.products";
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery);
@@ -78,7 +78,7 @@ public class Query {
     public boolean updateProductsPrices(String ebayId, double newPrice){
         boolean result = false;
 
-        String sqlQuery = "UPDATE products SET last_known_price = " + newPrice + " WHERE ebay_id = \'" + ebayId + "\'";
+        String sqlQuery = "UPDATE ebaydb.products SET last_known_price = " + newPrice + " WHERE ebay_id = \'" + ebayId + "\'";
 
         try {
             Statement statement = connection.createStatement();
@@ -100,7 +100,7 @@ public class Query {
     private int getProductIdFromBayId(String ebayId){
         int result = -1;
 
-        String sqlQuery = "SELECT id FROM products WHERE ebay_id =  \'" + ebayId + "\'";
+        String sqlQuery = "SELECT id FROM ebaydb.products WHERE ebay_id =  \'" + ebayId + "\'";
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery);
@@ -129,7 +129,7 @@ public class Query {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String sqlQuery = "INSERT INTO price_history (price, timestamp, product_id) VALUES (" + newPrice +  ", " +  "\'" + sdf.format(timestamp)
+        String sqlQuery = "INSERT INTO ebaydb.price_history (price, timestamp, product_id) VALUES (" + newPrice +  ", " +  "\'" + sdf.format(timestamp)
                 + "\', " + productId + ")";
 
         try {
@@ -153,7 +153,7 @@ public class Query {
     public ArrayList<Integer> checkPriceWatchNotifications(){
         ArrayList<Integer> results = new ArrayList<Integer>();
 
-        String sqlQuery = "SELECT id, product_id, user_id, last_notified_price FROM product_watches";
+        String sqlQuery = "SELECT id, product_id, user_id, last_notified_price FROM ebaydb.product_watches";
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery);
@@ -180,7 +180,7 @@ public class Query {
     public boolean updateLastNotifiedPrice(int watchId, double price){
         boolean result = false;
 
-        String sqlQuery = "UPDATE product_watches SET last_notified_price = " + price + "WHERE id = " + watchId;
+        String sqlQuery = "UPDATE ebaydb.product_watches SET last_notified_price = " + price + "WHERE id = " + watchId;
 
         try {
             Statement statement = connection.createStatement();
@@ -204,7 +204,7 @@ public class Query {
         HashMap<Integer, ArrayList<Integer>> result = new HashMap<Integer, ArrayList<Integer>>();
 
         for (int watchId : priceWatchId){
-            String sqlQuery = "SELECT product_id, user_id FROM product_watches WHERE id = " + watchId;
+            String sqlQuery = "SELECT product_id, user_id FROM ebaydb.product_watches WHERE id = " + watchId;
             try {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(sqlQuery);
@@ -236,7 +236,7 @@ public class Query {
     public String getUserEmail(int id){
         String result = null;
 
-        String sqlQuery = "SELECT email FROM users WHERE id = " + id;
+        String sqlQuery = "SELECT email FROM ebaydb.users WHERE id = " + id;
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery);
@@ -259,7 +259,7 @@ public class Query {
     public double getProductPrice(int productId){
         double result = -1;
 
-        String sqlQuery = "SELECT last_known_price FROM products WHERE id = " + productId;
+        String sqlQuery = "SELECT last_known_price FROM ebaydb.products WHERE id = " + productId;
 
         try{
             Statement statement = connection.createStatement();
@@ -284,7 +284,7 @@ public class Query {
     public int getProductIdWatchTable(int watchId){
         int result = -1;
 
-        String sqlQuery = "SELECT product_id FROM product_watches WHERE id = " + watchId;
+        String sqlQuery = "SELECT product_id FROM ebaydb.product_watches WHERE id = " + watchId;
 
         try{
             Statement statement = connection.createStatement();
@@ -308,7 +308,7 @@ public class Query {
      */
     public ImmutableItemInfo getProductDetails(int productId){
         ImmutableItemInfo itemInfo = null;
-        String sqlQuery = "SELECT name, last_known_price, item_web_url FROM products WHERE id = " + productId;
+        String sqlQuery = "SELECT name, last_known_price, item_web_url FROM ebaydb.products WHERE id = " + productId;
 
         try{
             Statement statement = connection.createStatement();
