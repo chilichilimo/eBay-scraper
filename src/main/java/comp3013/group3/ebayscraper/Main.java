@@ -19,7 +19,7 @@ import java.util.Properties;
 public class Main {
     public static void main(String args[]) {
 
-        Logger LOG = LogManager.getLogger(Query.class.getName());
+        Logger LOG = LogManager.getLogger(Main.class.getName());
 
         Properties properties = new Properties();
         try {
