@@ -42,7 +42,7 @@ class Driver {
 
         loadDriver();
 
-        String passing_url = url + ";databaseName=ebaySqlServerDB;user="+username+";password="+password+";";
+        String passing_url = url + ";databaseName=ebayDbWarehouse;user="+username+";password="+password+";";
 
         // Make connection
         Connection connection = null;
