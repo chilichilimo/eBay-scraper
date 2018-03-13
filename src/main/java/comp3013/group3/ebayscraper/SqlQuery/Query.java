@@ -63,7 +63,7 @@ public class Query {
 
             LOG.info("Retrieved ebay IDs from the database.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return results;
@@ -86,7 +86,7 @@ public class Query {
             result = true;
             LOG.info("Updated price for eBay ID " + ebayId + " with " + newPrice + " price.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return result;
@@ -110,7 +110,7 @@ public class Query {
 
             LOG.info("Product ID" + result + "retrieved from ebay ID " + ebayId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return result;
@@ -138,7 +138,7 @@ public class Query {
             result = true;
             LOG.info("Price history for eBay ID " + ebayId + " updated with price " + newPrice);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return result;
@@ -165,7 +165,7 @@ public class Query {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return results;
@@ -188,7 +188,7 @@ public class Query {
             result = true;
             LOG.info("Last notified price updated for watch ID " + watchId + " with price " + price);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return result;
@@ -222,7 +222,7 @@ public class Query {
                 LOG.info("Created email notification for user " + resultSet.getInt(2) + "and products "
                         + result.get(resultSet.getInt(2)));
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOG.debug("SQL Exception: " + e.getMessage());
             }
         }
         return result;
@@ -246,7 +246,7 @@ public class Query {
 
             LOG.info("Getting user email " + result + " for ID " + id);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
         return result;
     }
@@ -270,7 +270,7 @@ public class Query {
 
             LOG.info("Getting product price " + result + " for product ID " + productId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return result;
@@ -295,7 +295,7 @@ public class Query {
 
             LOG.info("Product ID " + result + " retrieved for watch ID " + watchId);
         } catch (SQLException e){
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
 
         return result;
@@ -321,7 +321,7 @@ public class Query {
                     .price(resultSet.getDouble(2))
                     .build();
         } catch(SQLException e){
-            e.printStackTrace();
+            LOG.debug("SQL Exception: " + e.getMessage());
         }
         return itemInfo;
     }
