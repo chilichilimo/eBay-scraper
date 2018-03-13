@@ -5,6 +5,8 @@ import comp3013.group3.ebayscraper.SqlQuery.Query;
 import comp3013.group3.ebayscraper.httpclient.Client;
 import comp3013.group3.ebayscraper.mailer.ImmutableItemInfo;
 import comp3013.group3.ebayscraper.mailer.Mailer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -16,6 +18,8 @@ import java.util.Properties;
 
 public class Main {
     public static void main(String args[]) {
+
+        Logger LOG = LogManager.getLogger(Main.class.getName());
 
         Properties properties = new Properties();
         try {
