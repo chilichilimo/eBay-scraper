@@ -3,10 +3,14 @@ package comp3013.group3.ebayscraper.mailer;
 import com.google.common.collect.ImmutableMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.StringWriter;
 import java.util.Properties;
 
 class MailerClient implements Mailer {
@@ -16,6 +20,10 @@ class MailerClient implements Mailer {
 	private String mailPW;
 
 	private static Properties emailProps = new Properties();
+	private static VelocityEngine engine = new VelocityEngine();
+	static {
+		engine.init();
+	}
 
 	static {
 		emailProps.put("mail.smtp.auth", "true");
@@ -46,30 +54,14 @@ class MailerClient implements Mailer {
 	void sendMail(String email, Iterable<ImmutableItemInfo> items) throws MailerException {
 		StringBuilder builder = new StringBuilder();
 		builder.append("New lowest prices for the following items: \n");
-
-		boolean no_items = true;
-		for (ImmutableItemInfo item : items) {
-			if (item == null) {
-				System.out.println(email + " has null item");
-			} else {
-				no_items = false;
-				builder.append("item: " + item.name() + " price: " + item.price() + " link " + item.url());
-				builder.append("\n");
-			}
-		}
-
-		if (no_items) {
-			return;
-		}
-
-		builder.append("Footer stuff\n");
+		
+		String bodyText = makeTemplate(email, items);
 		try {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(mailUN));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
 			message.setSubject("New update!");
-			message.setText(builder.toString());
-
+			message.setContent(bodyText, "text/html");
 			Transport.send(message);
 
 			LOG.info("Successfully able to send email to: " + email);
@@ -78,5 +70,16 @@ class MailerClient implements Mailer {
 			LOG.debug(e.getMessage());
 			throw new MailerException(email, e);
 		}
+	}
+
+	String makeTemplate(String email, Iterable<ImmutableItemInfo> items) {
+		Template template = engine.getTemplate("resources/email-template.vm");
+		VelocityContext context = new VelocityContext();
+		context.put("email", email);
+		context.put("objs", items);
+
+		StringWriter out = new StringWriter();
+		template.merge(context, out);
+		return out.toString();
 	}
 }
