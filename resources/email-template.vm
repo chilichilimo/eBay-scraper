@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        .full {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation bar -->
+<h3>Hey there ${email}!</h3>
+<h4>Some items on your watchlist have new low prices!</h4>
+    #foreach( $obj in $objs )
+    <a href="$obj.url()">
+        <div class="html-editor-align-center">
+            <p>${obj.name()} </br>
+                Current price: &pound${obj.price()}</p>
+            <img src="${obj.imageUrl()}" class="full">
+        </div>
+    </a>
+    #end
+</body>
+</html>

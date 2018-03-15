@@ -8,4 +8,5 @@ public interface ItemInfo {
 	String name();
 	String url();
 	double price();
+	String imageUrl();
 }

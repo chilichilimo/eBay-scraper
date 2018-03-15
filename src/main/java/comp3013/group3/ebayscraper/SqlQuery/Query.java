@@ -308,7 +308,7 @@ public class Query {
      */
     public ImmutableItemInfo getProductDetails(int productId){
         ImmutableItemInfo itemInfo = null;
-        String sqlQuery = "SELECT name, last_known_price, item_web_url FROM ebaydb.products WHERE id = " + productId;
+        String sqlQuery = "SELECT name, last_known_price, item_web_url, image FROM ebaydb.products WHERE id = " + productId;
 
         try{
             Statement statement = connection.createStatement();
@@ -319,6 +319,7 @@ public class Query {
                     .name(resultSet.getString(1))
                     .url((resultSet.getString(3) == null)? "No Link is available" : resultSet.getString(3))
                     .price(resultSet.getDouble(2))
+                    .imageUrl(resultSet.getString(4))
                     .build();
         } catch(SQLException e){
             LOG.debug("SQL Exception: " + e.getMessage());
