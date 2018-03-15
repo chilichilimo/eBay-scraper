@@ -20,7 +20,7 @@
     <a href="$obj.url()">
         <div class="html-editor-align-center">
             <p>${obj.name()} </br>
-                Current price: &pound${obj.price()}</p>
+                Current price: $${obj.price()}</p>
             <img src="${obj.imageUrl()}" class="full">
         </div>
     </a>
