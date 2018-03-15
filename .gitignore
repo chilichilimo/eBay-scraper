@@ -8,6 +8,7 @@ target/
 
 # Log file
 *.log
+log/*
 
 # BlueJ files
 *.ctxt
@@ -29,3 +30,6 @@ hs_err_pid*
 
 # Live config
 resources/config.properties
+
+# Dependency pom
+dependency-reduced-pom.xml
