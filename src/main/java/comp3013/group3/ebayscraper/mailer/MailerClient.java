@@ -13,6 +13,13 @@ import javax.mail.internet.MimeMessage;
 import java.io.StringWriter;
 import java.util.Properties;
 
+/**
+ * REFERENCES:
+ * 1. https://www.mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
+ * 2. http://www.codingpedia.org/ama/how-to-compose-html-emails-in-java-with-spring-and-velocity/
+ * 3. https://kripalkashyav.wordpress.com/2014/08/17/java-mail-api-with-velocity-template-simple-example/
+ */
+
 class MailerClient implements Mailer {
 	private static Logger LOG = LogManager.getLogger(MailerClient.class.getName());
 

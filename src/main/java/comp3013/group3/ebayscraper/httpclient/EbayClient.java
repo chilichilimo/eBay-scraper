@@ -19,6 +19,11 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+/**
+ * REFERENCES:
+ * 1. https://www.mkyong.com/java/apache-httpclient-examples/
+ */
+
 class EbayClient implements Client {
 	private static Logger LOG = LogManager.getLogger(EbayClient.class.getName());
 

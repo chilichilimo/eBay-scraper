@@ -11,6 +11,9 @@ import java.util.Properties;
 
 /**
  * JDCB Driver Manager wrapper
+ *
+ * REFERENCES:
+ * 1. https://blogs.msdn.microsoft.com/brian_swan/2011/03/02/getting-started-with-the-sql-server-jdbc-driver/
  */
 class Driver {
 

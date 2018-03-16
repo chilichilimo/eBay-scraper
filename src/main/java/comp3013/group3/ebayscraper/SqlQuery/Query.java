@@ -12,6 +12,11 @@ import java.util.Properties;
 
 /**
  * Contains static functions for SQL queries.
+ *
+ * REFERENCES:
+ * 1. https://docs.microsoft.com/en-us/azure/sql-database/sql-database-connect-query-java
+ * 2. https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html
+ * 3. https://www.ntu.edu.sg/home/ehchua/programming/java/JDBC_Basic.html
  */
 public class Query {
 
