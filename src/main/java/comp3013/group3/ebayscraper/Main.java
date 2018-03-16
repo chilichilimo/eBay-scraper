@@ -37,7 +37,6 @@ public class Main {
             JSONObject payload = client.getItem(id);
             if (!payload.has("price")) {
                 LOG.error("eBay ID " + id + "is not valid.");
-                //TODO: Cleanup expired row with eBayID.
                 continue;
             }
             double newPrice = payload.getJSONObject("price").getDouble("value");
